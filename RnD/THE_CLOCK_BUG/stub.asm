@@ -1,0 +1,7 @@
+JMP	#0
+MOV	R3, #0
+ADD R3, R3, #1
+XOR R0, R0, R0
+XOR R0, R0, R0
+XOR R0, R0, R0
+XOR R0, R0, R0
