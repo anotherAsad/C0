@@ -28,3 +28,5 @@
   to AFTER the Regbank Decoder. This eliminates the metastable transition of decoder outputs (like changing Register
   select line from 0 to 3, may change R0E, R1E, R2E and R3E bits in their metastable state, which in turn issues
   falling edges to enables of R0, R1, R2 or R3 if CLK is also HI).
+  
+  **** The notes on results of a similar investigation are included in the sister repository named C0-Synthesizable. Also worth a read.
