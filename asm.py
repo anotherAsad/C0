@@ -18,7 +18,7 @@ type_op = {
 
 	"JO"	: ("00", "1001", 2),
 	"JNO"	: ("00", "0001", 2),
-	
+
 	"JS"	: ("00", "1010", 2),
 	"JL"	: ("00", "1010", 2),
 	"JNGE"	: ("00", "1010", 2),
@@ -35,7 +35,7 @@ type_op = {
 	"JNBE"	: ("00", "1100", 2),
 	"JNA"	: ("00", "0100", 2),
 	"JBE"	: ("00", "0100", 2),
-	
+
 	"JLE"	: ("00", "1101", 2),
 	"JNG"	: ("00", "1101", 2),
 	"JNLE"	: ("00", "0101", 2),
@@ -50,7 +50,7 @@ type_op = {
 	"SHL"	: ("11", "0100", 3),
 	"SHR"	: ("11", "0101", 3),
 	"ROL"	: ("11", "0110", 3),
-	"ROR"	: ("11", "0111", 3),
+	"ROR"	: ("11", "0111", 3)
 	}
 
 reg = {"R0": "000", "R1": "001", "R2": "010", "R3": "011", "R4": "100", "R5": "101", "R6": "110", "R7": "111"}
@@ -67,16 +67,14 @@ def assemble(string):
 	string = string.replace(",", "")
 	tokenized = string.split()
 	instr = "21'b"
-	# NOP
-	if tokenized[0] == "NOP":
-		return "21'b110001000000000000000"
+
 	if len(tokenized) != type_op[tokenized[0]][2]:
 		return "err"
 	else:
 		# Instruction Type
 		instr += type_op[tokenized[0]][0]
 		# I/R
-		if tokenized[-1][0] == '#':
+		if tokenized[-1][0] == '#' or tokenized[0] == 'NOT':
 			instr += '1'
 		else:
 			instr += '0'
@@ -97,7 +95,7 @@ def assemble(string):
 				instr += "000"						# instr is move with immed. Does not need AMUX arg
 			else:
 				instr += reg[tokenized[2]]
-		else:										
+		else:
 			instr += reg[tokenized[1]]				# instr is comp type
 		# BMUX and IMMED
 		if tokenized[0] == "NOT":

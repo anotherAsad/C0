@@ -1,0 +1,11 @@
+JMP	#0
+MOV R0, #221
+MOV	R3, #0
+MOV R2, #0
+XOR R0, R0, R0
+
+L0:
+ADD R3, R3, #7
+ADD R2, R2, #5
+ADD R0, R0, R3
+JMP L0

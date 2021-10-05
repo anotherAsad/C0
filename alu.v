@@ -18,15 +18,21 @@ module ALU(Out, FLG, A, B, opcode);
 	rotateLeft  ROL(ROLOut, B);
 	rotateRight ROR(ROROut, B);
 
-	bytemux8 MX(Out, mathOut, xorOut, andOut, ornOut, BSLOut, BSROut, ROLOut, ROROut, opcode[2], opcode[1], opcode[0]);
+	bytemux8 MX(
+		Out,
+		mathOut, xorOut, andOut, ornOut,
+		BSLOut, BSROut, ROLOut, ROROut,
+		opcode[2], opcode[1], opcode[0]
+	);
+
 	nor zerocheck(FLG[3], Out[0], Out[1], Out[2], Out[3], Out[4], Out[5], Out[6], Out[7]);
 
-	buf		b0(FLG[2], mathOut[7]);							// Sign Bit handle
-	not     n0(w0, FLG[3]);
-	and		a0(FLG[4], w0, FLG[0]);
-	or		o0(FLG[5], FLG[2], FLG[3]);
-	buf		b(FLG[6], 1);
-	buf		b(FLG[7], 0);
+	buf	b0(FLG[2], mathOut[7]);							// Sign Bit handle
+	not n0(w0, FLG[3]);
+	and	a0(FLG[4], w0, FLG[0]);
+	or	o0(FLG[5], FLG[2], FLG[3]);
+	buf	b1(FLG[6], 1);
+	buf	b2(FLG[7], 0);
 endmodule
 
 /*
@@ -66,4 +72,3 @@ FLG[7] - 0										; CONT
 
 
 */
-

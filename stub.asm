@@ -1,14 +1,11 @@
-JMP #0
-MOV R0, #0
-MOV R3, #0
+JMP	#0
+MOV R0, #221
+MOV	R3, #0
+MOV R2, #0
+XOR R0, R0, R0
 
-;; Sum of first n integers
-
-L1:
-ADD R3, R3, #1			; Loop Variable
-ADD R0, R0, R3			; Sum variable
-CMP R3, #10
-JNE	L1
-
-; Jump back to self for stopping the control flow.
-STUCK: JMP STUCK
+L0:
+ADD R3, R3, #7
+ADD R2, R2, #5
+ADD R0, R0, R3
+JMP L0

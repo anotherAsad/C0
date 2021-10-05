@@ -1,0 +1,47 @@
+2021-10-05
+
+- This project contains the Rising-edge triggered flip-flops based implementation of C0 core.
+- The base project for this was (probably) the "clockBug" commit in the RnD folder of original C0 commit on github.
+- The project was reopened in order to review the nature of the clock bug, and precisely validate the theorized causes
+  via simulation.
+- Refresher: There are only two main sequential block components in the entire design:
+	1) The Register Bank.
+	2) The Instruction Pointer.
+- Refresher: When the clockBug was first identified, it is believed that the Register Bank was falling edge triggered,
+  while the Instruction Pointer was rising edge triggered (by inverting clock to the input of IPTR). Probably, because
+  I believed that the Instruction, and consequently the IPTR must be sheld stable around the falling edge of clock to
+  properly execute the instruction. But this introduced a class of bugs that I like to call "FALSE CLOCK EDGE" bugs.
+- FALSE CLOCK EDGE bugs occur due to faulty clock gating, whereby the enable signal of clock-gate causes clock edge
+  generation just after clock-edge transition. The professional way of avoiding it is to avoid clock gating as 
+  flip-flop enable mechanism.
+- In the particular case of posedge IPTR and negedge Register Bank, the rising edge updates IPTR, and consequently,
+  the instruction on the core's input. At the Register Bank's clock-gating AND-gate instance, the rising edge of clock,
+  when followed by a falling enable (i.e. an instruction with enable HI followed by and instruction with enable LO),
+  causes a FALSE FALLING CLOCK EDGE. The width of pulse that terminates with falling edge is equals:
+  the time delay of rising clock edge - the time delay of instruction change.
+  ^^ this time difference is the duration for which the clock-gate is active.
+- A single change in this reopening, i.e. making both IPTR and Register bank falling-edge triggered, fixed the bug.
+  When both sequential blocks are falling-edge triggered, the falling edge of clock on the clock-gate of Regbank
+  closes the gate, hence making its output immune to any subsequent changes of enable bit of clock-gate due to changing
+  instruction.
+- Moreover, to make this bad flip-flop design better, the clock gate is shifted from BEFORE the Regbank Decoder (DEC)
+  to AFTER the Regbank Decoder. This eliminates the metastable transition of decoder outputs (like changing Register
+  select line from 0 to 3, may change R0E, R1E, R2E and R3E bits in their metastable state, which in turn issues
+  falling edges to enables of R0, R1, R2 or R3 if CLK is also HI).
+  
+======================================= FROM FALLING EDGE IMPL TO RISING EDGE IMPL ===================================
+- Naively changing flip-flops from Falling-Edge to Rising-edge causes FALSE CLOCK EDGE bugs:
+  The rising edge of CLK on the clock-gating AND-gate instance primes the gate for any subsequent changes
+  of En bit on clock-gate's input. So an instruction change - which follows the rising-edge of CLK on IPTR - that
+  encodes the falling En bit on clock gate causes a FALSE FALLING CLOCK EDGE, and results in a mis-executed
+  instruction.
+- The fix of this issue lies in a single consideration: In the falling-edge case, a CLK transition from HI to LO,
+  locked the clock-gate to LO, rendering its output immune to any subsequent changes of En bit. So in the rising-edge
+  case, a CLK transition from LO to HI must also lock the CLK gate to HI, rendering its output immune to any
+  subsequent changes of En bit.
+- To do this, we use an OR-gate instance for clock gating, with a modified En bit input scheme: The inverse of En bit,
+  i.e. ~En, is fed to the or gate. So the expression is : clk_gate = ~En | CLK, instead of clk_gate = En & CLK.
+- ~En means that when the En is LO, the ~En is HI, and the clk_gate output is stays HI regardless of CLK state. So,
+  En = LO drives the clk_gate to a default state of HI, and makes it independent of CLK. When EN = HI, ~En = LO,
+  making the output of clk_gate dependent only CLK. Any rising-edge of CLK is taken as a valid rising edge that
+  triggers the respective flip-flop.

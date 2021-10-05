@@ -1,28 +1,23 @@
 `include "core.v"
 
 module testbench();
-	reg reset, CLK;
-	wire Q;
-	TRflipflop TRFF(Q, reset, CLK);
+	reg PL_E, CLK;
+	reg [7:0] PL;
+	wire[7:0] Addr;
+	integer i;
 
+	instPtr PC(Addr, PL, PL_E, CLK);
+	
 	initial begin
-		$monitor("%d", Q);
 		CLK = 0;
-		reset = 1;
-#2 CLK = ~CLK;
-#2 CLK = ~CLK;
-		reset = 1;
-		#2 CLK = ~CLK;
-#2 CLK = ~CLK;
-#2 CLK = ~CLK;
-#2 CLK = ~CLK;
-
-#2 CLK = ~CLK;
-#2 CLK = ~CLK;
-
-#2 CLK = ~CLK;
-#2 CLK = ~CLK;
-#2 CLK = ~CLK;
-#2 CLK = ~CLK;
+		PL = 8'b00000000;
+		PL_E = 1;
+		#1 CLK = 1; #1 CLK = 0;
+		PL_E = 0;
+		for(i=0; i<10; i=i+1)begin
+			$display("TRU:%d %d", Addr, CLK);
+			#1 CLK = ~CLK;
+			#100;
+		end
 	end
 endmodule

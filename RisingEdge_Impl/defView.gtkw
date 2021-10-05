@@ -1,0 +1,66 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Mon Oct 04 13:11:33 2021
+[*]
+[dumpfile] "C:\Users\bnasi\Verilog-RnD\C0_Investigation\test.vcd"
+[dumpfile_mtime] "Mon Oct 04 12:53:01 2021"
+[dumpfile_size] 2637322
+[savefile] "C:\Users\bnasi\Verilog-RnD\C0_Investigation\defView.gtkw"
+[timestart] 0
+[size] 1366 705
+[pos] -1 -1
+*-3.942880 25 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] testBench.
+[treeopen] testBench.C0.
+[treeopen] testBench.C0.C0.
+[treeopen] testBench.C0.C0.RB0.
+[sst_width] 197
+[signals_width] 110
+[sst_expanded] 1
+[sst_vpaned_height] 190
+@24
+testBench.R0[7:0]
+testBench.R1[7:0]
+testBench.R2[7:0]
+testBench.R3[7:0]
+@420
+testBench.i
+@22
+testBench.INS[20:0]
+testBench.Addr[7:0]
+@28
+[color] 2
+testBench.C0.C0.RB0.RS2
+[color] 2
+testBench.C0.C0.RB0.RS1
+[color] 2
+testBench.C0.C0.RB0.RS0
+[color] 6
+testBench.C0.C0.RB0.MS1
+[color] 6
+testBench.C0.C0.RB0.MS0
+testBench.C0.C0.RB0.E
+@24
+testBench.C0.C0.RB0.MXOUT[7:0]
+@29
+[color] 2
+testBench.C0.C0.RB0.E
+[color] 2
+testBench.C0.C0.RB0.En
+@28
+[color] 5
+testBench.C0.C0.RB0.R0E
+[color] 5
+testBench.C0.C0.RB0.R1E
+[color] 5
+testBench.C0.C0.RB0.R2E
+[color] 5
+testBench.C0.C0.RB0.R3E
+@200
+-
+@28
+[color] 7
+testBench.CLK
+testBench.reset
+[pattern_trace] 1
+[pattern_trace] 0

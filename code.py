@@ -12,10 +12,7 @@ outfile = ""
 # Label collecting pass
 while x < len(infile):
 	# Remove new lines and whitespaces
-	commentIndex = infile[x].find(";")
-	if commentIndex > -1:
-		infile[x] = infile[x][:commentIndex]
-	if infile[x].isspace() or len(infile[x]) == 0:
+	if infile[x].isspace():
 		infile.pop(x)
 		continue
 	# Split to words
@@ -34,7 +31,7 @@ while x < len(infile):
 x = 0
 # Civilize the instr, remove labelish anarchy
 while x < len(infile):
-	if (infile[x][-1][0] != 'R' or not infile[x][-1][1].isdigit()) and infile[x][-1][0] != '#' and len(infile[x]) > 1:
+	if (infile[x][-1][0] != 'R' or not infile[x][-1][1].isdigit()) and infile[x][-1][0] != '#':
 		infile[x][-1] = "#"+str(labels[infile[x][-1]]-1)
 	infile[x] = " ".join(infile[x])
 	# Translate the string to machine code
@@ -44,5 +41,5 @@ while x < len(infile):
 count = 0
 for x in infile:
 	num = hex(count)[2:].upper()
-	print 'i'+(2-len(num))*'0'+num+" = "+x
+	print('i'+(2-len(num))*'0'+num+" = "+x)
 	count += 1
